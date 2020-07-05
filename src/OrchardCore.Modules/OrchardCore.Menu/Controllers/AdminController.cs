@@ -97,10 +97,13 @@ namespace OrchardCore.Menu.Controllers
 
             var contentItem = await _contentManager.NewAsync(id);
 
-            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, _updateModelAccessor.ModelUpdater, true);
+            dynamic model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, _updateModelAccessor.ModelUpdater, true);
 
             if (!ModelState.IsValid)
             {
+                model.MenuContentItemId = menuContentItemId;
+                model.MenuItemId = menuItemId;
+
                 return View(model);
             }
 
@@ -154,7 +157,7 @@ namespace OrchardCore.Menu.Controllers
             // Look for the target menu item in the hierarchy
             JObject menuItem = FindMenuItem(menu.Content, menuItemId);
 
-            // Couldn't find targetted menu item
+            // Couldn't find targeted menu item
             if (menuItem == null)
             {
                 return NotFound();
@@ -200,7 +203,7 @@ namespace OrchardCore.Menu.Controllers
             // Look for the target menu item in the hierarchy
             JObject menuItem = FindMenuItem(menu.Content, menuItemId);
 
-            // Couldn't find targetted menu item
+            // Couldn't find targeted menu item
             if (menuItem == null)
             {
                 return NotFound();
@@ -208,10 +211,13 @@ namespace OrchardCore.Menu.Controllers
 
             var contentItem = menuItem.ToObject<ContentItem>();
 
-            var model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, _updateModelAccessor.ModelUpdater, false);
+            dynamic model = await _contentItemDisplayManager.UpdateEditorAsync(contentItem, _updateModelAccessor.ModelUpdater, false);
 
             if (!ModelState.IsValid)
             {
+                model.MenuContentItemId = menuContentItemId;
+                model.MenuItemId = menuItemId;
+
                 return View(model);
             }
 
@@ -255,7 +261,7 @@ namespace OrchardCore.Menu.Controllers
             // Look for the target menu item in the hierarchy
             var menuItem = FindMenuItem(menu.Content, menuItemId);
 
-            // Couldn't find targetted menu item
+            // Couldn't find targeted menu item
             if (menuItem == null)
             {
                 return NotFound();
